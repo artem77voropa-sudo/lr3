@@ -1,0 +1,4 @@
+Тестовый запуск для C:\dev\securelab\tests\SecureLab.Api.Tests\bin\Release\net10.0\SecureLab.Api.Tests.dll (.NETCoreApp,Version=v10.0)
+Общее количество тестовых файлов (1), соответствующих указанному шаблону.
+
+Пройден!   : не пройдено     0, пройдено    67, пропущено     0, всего    67, длительность 1 m 12 s. - SecureLab.Api.Tests.dll (net10.0)

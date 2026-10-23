@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="uk">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SecureLab — обліковий запис</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="auth-lab.css"></head>
+<body>
+<header class="page-header"><div><p class="eyebrow">SECURELAB · ЛР 03</p><h1>Обліковий запис</h1><p id="session-state" role="status">Перевіряємо сеанс…</p></div><a href="/">Трекер інцидентів</a></header>
+<main class="auth-grid">
+<section class="panel"><h2>Реєстрація</h2><p>Створіть навчальний обліковий запис. Після реєстрації потрібно увійти.</p>
+<form id="register">
+<label>Ім’я користувача<input name="userName" autocomplete="username" maxlength="256" required></label>
+<label>Email<input name="email" type="email" autocomplete="email" maxlength="256" required></label>
+<label>Ім’я для показу<input name="displayName" maxlength="120" required></label>
+<label>Пароль<input name="password" type="password" autocomplete="new-password" minlength="10" required></label>
+<p class="hint">Від 10 символів: велика й мала латинські літери, цифра та спеціальний символ.</p><button>Зареєструватися</button>
+</form><pre id="register-result" role="status"></pre></section>
+<section class="panel"><h2>Вхід і профіль</h2>
+<form id="login"><label>Ім’я користувача<input name="userName" autocomplete="username" required></label>
+<label>Пароль<input name="password" type="password" autocomplete="current-password" required></label><button>Увійти</button></form>
+<div class="actions"><button id="me" type="button">Мій профіль</button><button id="logout" type="button">Вийти</button></div>
+<pre id="login-result" role="status"></pre><pre id="profile"></pre><pre id="logout-result" role="status"></pre></section>
+<section class="panel incident-panel"><h2>Новий інцидент</h2><p>Власника визначить сервер за вашим сеансом.</p>
+<form id="create"><fieldset id="incident-fields" disabled>
+<label>Заголовок<input name="title" maxlength="160" required></label>
+<label>Опис<textarea name="description" maxlength="4000" rows="3" required></textarea></label>
+<label>Критичність<select name="severity"><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></label>
+<label>Час події (місцевий)<input name="occurredAtUtc" type="datetime-local" required></label>
+<button>Створити інцидент</button></fieldset></form><pre id="create-result" role="status"></pre></section>
+</main><script src="auth-lab.js" type="module"></script></body></html>

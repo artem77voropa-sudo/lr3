@@ -1,0 +1,32 @@
+                          Table "public.identity_users"
+        Column        |           Type           | Collation | Nullable | Default 
+----------------------+--------------------------+-----------+----------+---------
+ Id                   | uuid                     |           | not null | 
+ DisplayName          | character varying(120)   |           | not null | 
+ UserName             | character varying(256)   |           |          | 
+ NormalizedUserName   | character varying(256)   |           |          | 
+ Email                | character varying(256)   |           |          | 
+ NormalizedEmail      | character varying(256)   |           |          | 
+ EmailConfirmed       | boolean                  |           | not null | 
+ PasswordHash         | text                     |           |          | 
+ SecurityStamp        | text                     |           |          | 
+ ConcurrencyStamp     | text                     |           |          | 
+ PhoneNumber          | text                     |           |          | 
+ PhoneNumberConfirmed | boolean                  |           | not null | 
+ TwoFactorEnabled     | boolean                  |           | not null | 
+ LockoutEnd           | timestamp with time zone |           |          | 
+ LockoutEnabled       | boolean                  |           | not null | 
+ AccessFailedCount    | integer                  |           | not null | 
+Indexes:
+    "PK_identity_users" PRIMARY KEY, btree ("Id")
+    "EmailIndex" btree ("NormalizedEmail")
+    "UserNameIndex" UNIQUE, btree ("NormalizedUserName")
+Referenced by:
+    TABLE "identity_user_claims" CONSTRAINT "FK_identity_user_claims_identity_users_UserId" FOREIGN KEY ("UserId") REFERENCES identity_users("Id") ON DELETE CASCADE
+    TABLE "identity_user_logins" CONSTRAINT "FK_identity_user_logins_identity_users_UserId" FOREIGN KEY ("UserId") REFERENCES identity_users("Id") ON DELETE CASCADE
+    TABLE "identity_user_roles" CONSTRAINT "FK_identity_user_roles_identity_users_UserId" FOREIGN KEY ("UserId") REFERENCES identity_users("Id") ON DELETE CASCADE
+    TABLE "identity_user_tokens" CONSTRAINT "FK_identity_user_tokens_identity_users_UserId" FOREIGN KEY ("UserId") REFERENCES identity_users("Id") ON DELETE CASCADE
+    TABLE "incident_comments" CONSTRAINT "FK_incident_comments_identity_users_author_user_id" FOREIGN KEY (author_user_id) REFERENCES identity_users("Id") ON DELETE RESTRICT
+    TABLE "incident_status_history" CONSTRAINT "FK_incident_status_history_identity_users_changed_by_user_id" FOREIGN KEY (changed_by_user_id) REFERENCES identity_users("Id") ON DELETE RESTRICT
+    TABLE "incidents" CONSTRAINT "FK_incidents_identity_users_owner_user_id" FOREIGN KEY (owner_user_id) REFERENCES identity_users("Id") ON DELETE RESTRICT
+

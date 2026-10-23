@@ -1,0 +1,4 @@
+AFTER fix
+GET /api/me without cookie, with X-Demo-UserId = Bob
+HTTP 401
+{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Unauthorized","status":401,"traceId":"00-2a4d51e133bf2f8d35607caa8bb8d62d-a541f0f3128272a6-00"}

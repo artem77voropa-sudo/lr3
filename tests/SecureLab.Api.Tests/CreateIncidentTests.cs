@@ -9,9 +9,16 @@ using SecureLab.Api.Presentation.Contracts;
 
 namespace SecureLab.Api.Tests;
 
-public sealed class CreateIncidentTests(SecureLabApiFactory factory) : IClassFixture<SecureLabApiFactory>
+public sealed class CreateIncidentTests(SecureLabApiFactory factory) : IClassFixture<SecureLabApiFactory>, IAsyncLifetime
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    private HttpClient _client = null!;
+
+    public async Task InitializeAsync()
+    {
+        _client = await factory.AliceClientAsync();
+    }
+
+    public Task DisposeAsync() => Task.CompletedTask;
 
     private static CreateIncidentRequest Valid(string title) => new(title, "Навчальний опис події.",
         "Low", new DateTimeOffset(2026, 9, 1, 13, 0, 0, TimeSpan.FromHours(3)));

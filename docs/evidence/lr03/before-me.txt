@@ -1,0 +1,4 @@
+Scaffold lab-03-start-v1 BEFORE fix
+GET /api/me without cookie, with X-Demo-UserId = Bob
+HTTP 200
+{"id":"10000000-0000-0000-0000-000000000002","userName":"bob","displayName":"Боб Мельник"}

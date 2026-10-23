@@ -1,0 +1,25 @@
+@api = http://localhost:5080
+
+### A-01: анонімний профіль — 401
+GET {{api}}/api/me
+
+### Підроблений заголовок без cookie — 401
+GET {{api}}/api/me
+X-Demo-UserId: 10000000-0000-0000-0000-000000000002
+
+### Анонімне створення — 401
+POST {{api}}/api/incidents
+Content-Type: application/json
+
+{
+  "title": "LR03 anonymous probe",
+  "description": "Синтетичний опис перевірки анонімного доступу.",
+  "severity": "Low",
+  "occurredAtUtc": "2026-09-01T10:00:00Z"
+}
+
+### Готовність стенда — 200
+GET {{api}}/health
+
+# Login/register виконуйте через браузерну форму або cookie-aware тести.
+# Паролі та значення cookie в цьому файлі не зберігаються.

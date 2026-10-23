@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using SecureLab.Api.Data;
 using SecureLab.Api.Data.Entities;
 using SecureLab.Api.Presentation.Contracts;
@@ -42,7 +43,7 @@ public static class Lab02Endpoints
                 .ToListAsync(ct);
             return Results.Ok(rows);
         });
-        app.MapPost("/api/incidents", async (CreateIncidentRequest request, SecureLabDbContext db, CancellationToken ct) =>
+        app.MapPost("/api/incidents", async (CreateIncidentRequest request, HttpContext context, SecureLabDbContext db, CancellationToken ct) =>
         {
             var now = DateTimeOffset.UtcNow;
             var errors = new Dictionary<string, string[]>();
@@ -67,6 +68,9 @@ public static class Lab02Endpoints
             if (errors.Count > 0)
                 return Results.ValidationProblem(errors);
 
+            if (!Guid.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out var ownerId))
+                return Results.Problem(statusCode: StatusCodes.Status500InternalServerError);
+
             // Навчальна перевірка конфлікту; не гарантує унікальність при одночасних POST.
             if (await db.Incidents.AnyAsync(row => row.Title == title
                 && (row.Status == IncidentStatus.New || row.Status == IncidentStatus.Triaged
@@ -77,7 +81,7 @@ public static class Lab02Endpoints
 
             var incident = new Incident
             {
-                Id = Guid.NewGuid(), OwnerUserId = DbSeeder.AliceId,
+                Id = Guid.NewGuid(), OwnerUserId = ownerId,
                 Title = title, Description = description, Severity = severity,
                 Status = IncidentStatus.New, OccurredAtUtc = request.OccurredAtUtc!.Value.ToUniversalTime(),
                 CreatedAtUtc = now, UpdatedAtUtc = now
@@ -87,7 +91,7 @@ public static class Lab02Endpoints
             return Results.Created($"/api/incidents/{incident.Id}", new CreatedIncidentResponse(
                 incident.Id, incident.Title, incident.Description, incident.Severity.ToString(),
                 incident.Status.ToString(), incident.OccurredAtUtc, incident.CreatedAtUtc, incident.UpdatedAtUtc));
-        });
+        }).RequireAuthorization();
     }
 }
 
